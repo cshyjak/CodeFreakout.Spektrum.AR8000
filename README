@@ -1,0 +1,6 @@
+CodeFreakout.Spektrum.AR8000
+
+Driver for the Spektrum AR8000 receiver.  Currently in development using a DX7s for the transmitter.
+
+NOTE:
+When adding a reference to the project when using the nuget package it seems that Nuget is choosing the wrong dll to reference.  Please manually remove the reference and add a reference to the dll located in the netmf42 folder.
