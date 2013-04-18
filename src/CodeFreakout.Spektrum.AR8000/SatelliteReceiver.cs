@@ -9,7 +9,6 @@ namespace CodeFreakout.Spektrum.AR8000
         private readonly byte[] _values;
         private int _index = 0;
         private bool _radioSynchronized;
-        private Hashtable _channelizedValues;
         private readonly ByteArrayChannelizer _channelizer;
 
         public int Throttle 
@@ -45,7 +44,6 @@ namespace CodeFreakout.Spektrum.AR8000
         public SatelliteReceiver(string portName)
         {
             _values = new byte[32];
-            _channelizedValues = new Hashtable();
             _channelizer = new ByteArrayChannelizer();
 
             _serial = new SerialPort(portName, 115200, Parity.None, 8, StopBits.One);
@@ -78,22 +76,20 @@ namespace CodeFreakout.Spektrum.AR8000
                 {
                     _index = 0;
 
-                    _channelizedValues = _channelizer.Channelize(_values);
+                    _channelizer.Channelize(_values);
                 }
             }
         }
 
         private int GetChannelValue(short channelId)
         {
-            if (_channelizedValues.Contains(channelId))
+            if (_channelizer.ChannelizedValues.Contains(channelId))
             {
                 //Convert the scale on the values to a %.  Min = -170, Max = 170
-                return (((int)_channelizedValues[channelId]) / 170) * 100;
+                return (((int)_channelizer.ChannelizedValues[channelId]) / 170) * 100;
             }
-            else
-            {
-                return 0;
-            }
+            
+            return 0;
         }
     }
 }

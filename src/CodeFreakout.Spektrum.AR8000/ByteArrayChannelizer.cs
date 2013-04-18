@@ -4,10 +4,15 @@ namespace CodeFreakout.Spektrum.AR8000
 {
     public class ByteArrayChannelizer
     {
-        public Hashtable Channelize(byte[] values)
-        {
-            var channelizedValues = new Hashtable();
+        public Hashtable ChannelizedValues { get; private set; }
 
+        public ByteArrayChannelizer()
+        {
+            ChannelizedValues = new Hashtable();
+        }
+
+        public void Channelize(byte[] values)
+        {
             var channelValue = new byte[2];
 
             for (var i = 0; i < 32; i += 2)
@@ -36,18 +41,16 @@ namespace CodeFreakout.Spektrum.AR8000
                         value = (short) (((channelValue[0] & 0x01) << 8) | channelValue[1]);
                     }
 
-                    if (channelizedValues.Contains(channelId))
+                    if (ChannelizedValues.Contains(channelId))
                     {
-                        channelizedValues[channelId] = value;
+                        ChannelizedValues[channelId] = value;
                     }
                     else
                     {
-                        channelizedValues.Add(channelId, value);    
+                        ChannelizedValues.Add(channelId, value);    
                     }
                 }
             }
-
-            return channelizedValues;
         }
     }
 }
